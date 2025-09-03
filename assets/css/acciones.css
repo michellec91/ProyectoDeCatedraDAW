@@ -1,0 +1,18 @@
+body {
+    min-height: 100vh;
+    background: url('../img/kantoregion.png') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: inherit;
+    filter: blur(8px) brightness(0.7);
+    z-index: -1;
+}

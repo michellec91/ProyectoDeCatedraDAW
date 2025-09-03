@@ -1,0 +1,42 @@
+.btn-primary {
+    background-color: #4EA5DF;
+    border-color: #4EA5DF;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #357cae;
+    border-color: #357cae;
+}
+
+.btn-primary:active, .btn-primary:focus, .btn-primary:active:focus {
+    background-color: #27618a;
+    border-color: #27618a;
+}
+
+body {
+    min-height: 100vh;
+    background: url('../img/kantoregion.png') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: inherit;
+    filter: blur(8px) brightness(0.7);
+    z-index: -1;
+}
+
+.card {
+    border-radius: 1.25rem;
+}
+
+.modal-content {
+    border-radius: 1.25rem;
+}
