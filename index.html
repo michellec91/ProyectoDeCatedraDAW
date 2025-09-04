@@ -36,7 +36,7 @@
                             <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <a href="#" class="small" data-toggle="modal" data-target="#forgotModal">Olvidé mi PIN</a>
-                                <a href="#" class="small">Crear cuenta</a>
+                               <a href="#" class="small" data-toggle="modal" data-target="#crearCuentaModal">Crear cuenta</a>
                             </div>
                         </form>
                     </div>
@@ -72,6 +72,42 @@
                 <button type="submit" class="btn btn-primary">Enviar enlace</button>
                 </div>
             </form>
+            </div>
+        </div>
+        </div>
+
+        <div class="modal fade" id="crearCuentaModal" tabindex="-1" role="dialog" aria-labelledby="crearCuentaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crearCuentaLabel">Crear cuenta nueva</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formCrearCuenta" novalidate>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" class="form-control" id="apellido" name="apellido" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo</label>
+                    <input type="email" class="form-control" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="pin">PIN nuevo (4 dígitos)</label>
+                    <input type="password" class="form-control" id="pin" name="pin" maxlength="4" pattern="\d{4}" placeholder="••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
+                </form>
+            </div>
             </div>
         </div>
         </div>
