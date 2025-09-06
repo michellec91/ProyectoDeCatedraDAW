@@ -1,0 +1,77 @@
+body {
+    min-height: 100vh;
+    background: url('../img/kantoregion.png') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: inherit;
+    filter: blur(8px) brightness(0.7);
+    z-index: -1;
+}
+
+.horizontal{
+    display: flex;
+    align-items: center;
+}
+
+.iconologin img{
+    width: 40px;
+    height: 40px;
+}
+
+.nombreusuario{
+    color: #E42A2D;
+    text-decoration: none;
+    margin-left: 10px; 
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: animaheader 15s linear 2s 1;
+}
+
+li{
+    list-style: none;
+}
+
+nav a{
+    text-decoration: none;
+    margin-left: 15px;
+    margin-right: 10px;
+}
+
+nav img{
+    width: 100px;
+    height: 80px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    transition: transform 5s;
+}
+
+section h2 {
+    text-align: center;
+    color: #E42A2D;
+}
+
+footer{
+    color: #E42A2D;
+    text-align: center;
+    padding: 15px;
+    font-weight: 900;
+}
