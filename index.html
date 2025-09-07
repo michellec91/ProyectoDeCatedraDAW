@@ -1,120 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokémon Bank</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/index.css">
-    <link rel="icon" type="image/png" href="assets/img/valor.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Bank</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/index.css">
+  <link rel="icon" type="image/png" href="assets/img/valor.png">
 </head>
 <body>
-    <main class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-12 col-sm-9 col-md-7 col-lg-5">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <div class="text-center mb-4">
-                            <img src="assets/img/valor.png" alt="Pokémon Bank" width="72" height="72" class="mb-2">
-                            <h1 class="h4">Inicia Sesión en tu Pokémon Bank</h1>
-                            <p class="text-muted small mb-0">Ingresa tus credenciales para continuar</p>
-                        </div>
-                        <form action="acciones.html" method="post" autocomplete="on" novalidate>
-                            <div class="form-group">
-                                <label for="username">Usuario</label>
-                                <input id="username" name="username" type="text" class="form-control" placeholder="Tu Usuario" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">PIN</label>
-                                <input id="password" name="password" type="password" class="form-control" placeholder="PIN" minlength="4" required>
-                                <small class="form-text text-muted">Mínimo 4 caracteres.</small>
-                            </div>
-                            <div class="form-group form-check">
-                                <input id="remember" name="remember" type="checkbox" class="form-check-input">
-                                <label class="form-check-label" for="remember">Recordar Usuario</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <a href="#" class="small" data-toggle="modal" data-target="#forgotModal">Olvidé mi PIN</a>
-                               <a href="#" class="small" data-toggle="modal" data-target="#crearCuentaModal">Crear cuenta</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <p class="text-center text-muted small mt-3 mb-0">Al iniciar sesión, aceptas nuestros <a href="#">términos</a>.</p>
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-9 col-md-7 col-lg-5">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="text-center mb-4">
+              <img src="assets/img/valor.png" alt="Pokémon Bank" width="72" height="72" class="mb-2">
+              <h1 class="h4">Inicia Sesión en tu Pokémon Bank</h1>
+              <p class="text-muted small mb-0">Ingresa tus credenciales para continuar</p>
             </div>
-        </div>
-    </main>
-
-        <div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="forgotLabel">Recuperar acceso</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="forgotForm" novalidate>
-                <div class="modal-body">
-                <p class="text-muted mb-3">
-                    Escribe el correo asociado a tu cuenta para enviarte un enlace y restablecer tu PIN.
-                </p>
-                <div class="form-group">
-                    <label for="recoverEmail">Correo electrónico</label>
-                    <input type="email" class="form-control" id="recoverEmail" name="recoverEmail"
-                        placeholder="tu@email.com" required>
-                    <div class="invalid-feedback">Ingresa un correo válido.</div>
-                </div>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Enviar enlace</button>
-                </div>
+            <form id="loginForm" autocomplete="on" novalidate>
+              <div class="form-group">
+                <label for="username">Usuario</label>
+                <input id="username" name="username" type="text" class="form-control" placeholder="Tu Usuario" required>
+              </div>
+              <div class="form-group">
+                <label for="password">PIN</label>
+                <input id="password" name="password" type="password" class="form-control" placeholder="PIN" minlength="4" required>
+                <small class="form-text text-muted">Mínimo 4 caracteres.</small>
+              </div>
+              <div class="form-group form-check">
+                <input id="remember" name="remember" type="checkbox" class="form-check-input">
+                <label class="form-check-label" for="remember">Recordar Usuario</label>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <a href="#" class="small" data-toggle="modal" data-target="#forgotModal">Olvidé mi PIN</a>
+                <a href="#" class="small" data-toggle="modal" data-target="#crearCuentaModal">Crear cuenta</a>
+              </div>
             </form>
-            </div>
+          </div>
         </div>
-        </div>
+        <p class="text-center text-muted small mt-3 mb-0">
+          Al iniciar sesión, aceptas nuestros 
+          <a href="#" id="linkTerminos">términos</a>.
+        </p>
+      </div>
+    </div>
+  </main>
 
-        <div class="modal fade" id="crearCuentaModal" tabindex="-1" role="dialog" aria-labelledby="crearCuentaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="crearCuentaLabel">Crear cuenta nueva</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="formCrearCuenta" novalidate>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                    <label for="apellido">Apellido</label>
-                    <input type="text" class="form-control" id="apellido" name="apellido" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="correo">Correo</label>
-                    <input type="email" class="form-control" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="pin">PIN nuevo (4 dígitos)</label>
-                    <input type="password" class="form-control" id="pin" name="pin" maxlength="4" pattern="\d{4}" placeholder="••••" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
-                </form>
-            </div>
-            </div>
+  <!-- Modales -->
+  <div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="forgotLabel">Recuperar acceso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        </div>
+        <form id="forgotForm" novalidate>
+          <div class="modal-body">
+            <p class="text-muted mb-3">Escribe el correo asociado a tu cuenta para enviarte un enlace y restablecer tu PIN.</p>
+            <div class="form-group">
+              <label for="recoverEmail">Correo electrónico</label>
+              <input type="email" class="form-control" id="recoverEmail" name="recoverEmail" placeholder="tu@email.com" required>
+              <div class="invalid-feedback">Ingresa un correo válido.</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Enviar enlace</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
-        
-    </body>
+  <div class="modal fade" id="crearCuentaModal" tabindex="-1" role="dialog" aria-labelledby="crearCuentaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crearCuentaLabel">Crear cuenta nueva</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formCrearCuenta" novalidate>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="apellido">Apellido</label>
+                <input type="text" class="form-control" id="apellido" name="apellido" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="correo">Correo</label>
+              <input type="email" class="form-control" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
+            </div>
+            <div class="form-group">
+              <label for="pin">PIN nuevo (4 dígitos)</label>
+              <input type="password" class="form-control" id="pin" name="pin" maxlength="4" pattern="\d{4}" placeholder="••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+  <script>
+    // Redirige a acciones.html con usuario
+    document.getElementById('loginForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const usuario = document.getElementById('username').value;
+      window.location.href = `acciones.html?usuario=${encodeURIComponent(usuario)}`;
+    });
+
+    // Mensaje al dar click en términos
+    document.getElementById('linkTerminos').addEventListener('click', function(e) {
+      e.preventDefault();
+      alert("Al aceptar los términos, aceptas las condiciones de uso de Pokémon Bank.");
+    });
+
+    // Modal Olvidé PIN
+    document.getElementById('forgotForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = document.getElementById('recoverEmail').value;
+      if(email) {
+        alert(`Se ha enviado un enlace de recuperación a ${email}`);
+        $('#forgotModal').modal('hide');
+      } else {
+        alert("Por favor ingresa un correo válido.");
+      }
+    });
+
+    // Modal Crear cuenta
+    document.getElementById('formCrearCuenta').addEventListener('submit', function(e){
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value;
+      const apellido = document.getElementById('apellido').value;
+      const correo = document.getElementById('correo').value;
+      const pin = document.getElementById('pin').value;
+
+      if(nombre && apellido && correo && pin.length === 4) {
+        alert(`Cuenta creada para ${nombre} ${apellido}. ¡Bienvenido a Pokémon Bank!`);
+        $('#crearCuentaModal').modal('hide');
+      } else {
+        alert("Por favor completa todos los campos correctamente.");
+      }
+    });
+  </script>
+</body>
 </html>

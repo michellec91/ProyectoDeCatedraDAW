@@ -1,15 +1,235 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acciones</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/acciones.css">
-    <link rel="icon" type="image/png" href="assets/img/valor.png">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Bank - Acciones</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/index.css">
+  <link rel="icon" type="image/png" href="assets/img/valor.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-9 col-md-7 col-lg-5">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <img src="assets/img/valor.png" alt="Pokémon Bank" width="72" height="72" class="mb-2">
+
+            <h1 class="h4 mb-2">Bienvenido a Pokémon Bank</h1>
+            <p class="text-muted small mb-1" id="saludoUsuario">Hola, Invitado!</p>
+            <p class="text-muted small mb-3">
+              Número de cuenta: <span id="numeroCuentaValor">1234-5678-9012</span> |
+              Saldo: <span id="saldoValor">$1,000.00</span>
+              <i class="fas fa-eye ml-2" id="toggleSaldo" style="cursor:pointer;"></i>
+            </p>
+
+            <div class="list-group text-left mb-3">
+              <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#depositoModal">Depositar</button>
+              <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#retiroModal">Retirar</button>
+              <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#saldoModal">Consultar Saldo</button>
+              <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#pagoModal">Pagar Servicios</button>
+              <button class="list-group-item list-group-item-action" id="btnHistorial">Historial de Transacciones</button>
+              <button class="list-group-item list-group-item-action" id="btnGrafica">Análisis de Transacciones</button>
+            </div>
+
+            <button class="btn btn-primary btn-block mt-2" id="btnSalir">Salir de sesión</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modales (Depósito, Retiro, Saldo, Pago de servicios) -->
+  <!-- Depósito -->
+  <div class="modal fade" id="depositoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Depositar</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form id="formDeposito">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="montoDeposito">Monto a depositar</label>
+              <input type="number" class="form-control" id="montoDeposito" placeholder="0.00" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Depositar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Retiro -->
+  <div class="modal fade" id="retiroModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Retirar</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form id="formRetiro">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="montoRetiro">Monto a retirar</label>
+              <input type="number" class="form-control" id="montoRetiro" placeholder="0.00" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Retirar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consulta de saldo -->
+  <div class="modal fade" id="saldoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Saldo</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Tu saldo actual es: <strong id="saldoModalValor">$1,000.00</strong></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pago servicios -->
+  <div class="modal fade" id="pagoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Pago de servicios</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form id="formPago">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="servicio">Selecciona un Servicio</label>
+              <select class="form-control" id="servicio" required>
+                <option value="">--Selecciona--</option>
+                <option value="Energía Eléctrica">Energía Eléctrica</option>
+                <option value="Internet">Internet</option>
+                <option value="Telefonía">Telefonía</option>
+                <option value="Agua Potable">Agua Potable</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="montoServicio">Monto a Pagar</label>
+              <input type="number" class="form-control" id="montoServicio" placeholder="0.00" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Pagar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    let saldo = 1000.00;
+    const numeroCuenta = "1234-5678-9012";
+    document.getElementById('numeroCuentaValor').textContent = numeroCuenta;
+
+    const params = new URLSearchParams(window.location.search);
+    const usuario = params.get('usuario') || "Invitado";
+    document.getElementById('saludoUsuario').textContent = `Hola, ${usuario}!`;
+
+    function actualizarSaldo() {
+      document.getElementById('saldoValor').textContent = `$${saldo.toFixed(2)}`;
+      document.getElementById('saldoModalValor').textContent = `$${saldo.toFixed(2)}`;
+    }
+    actualizarSaldo();
+
+    // Toggle saldo con icono de ojo
+    let saldoVisible = true;
+    document.getElementById('toggleSaldo').addEventListener('click', function() {
+      saldoVisible = !saldoVisible;
+      const eyeIcon = this;
+      document.getElementById('saldoValor').textContent = saldoVisible ? `$${saldo.toFixed(2)}` : "****";
+      eyeIcon.classList.toggle('fa-eye');
+      eyeIcon.classList.toggle('fa-eye-slash');
+    });
+
+    // Depósito
+    document.getElementById('formDeposito').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const monto = parseFloat(document.getElementById('montoDeposito').value);
+      if (!isNaN(monto) && monto > 0) {
+        saldo += monto;
+        actualizarSaldo();
+        $('#depositoModal').modal('hide');
+        document.getElementById('montoDeposito').value = '';
+        alert(`¡Depósito exitoso! Se han agregado $${monto.toFixed(2)} a tu saldo.`);
+      } else {
+        alert("Monto inválido.");
+      }
+    });
+
+    // Retiro
+    document.getElementById('formRetiro').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const monto = parseFloat(document.getElementById('montoRetiro').value);
+      if (!isNaN(monto) && monto > 0 && monto <= saldo) {
+        saldo -= monto;
+        actualizarSaldo();
+        $('#retiroModal').modal('hide');
+        document.getElementById('montoRetiro').value = '';
+        alert(`¡Retiro exitoso! Se han retirado $${monto.toFixed(2)} de tu saldo.`);
+      } else {
+        alert("Monto inválido o saldo insuficiente.");
+      }
+    });
+
+    // Pago servicios
+    document.getElementById('formPago').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const monto = parseFloat(document.getElementById('montoServicio').value);
+      const servicio = document.getElementById('servicio').value;
+      if (!isNaN(monto) && monto > 0 && monto <= saldo && servicio) {
+        saldo -= monto;
+        actualizarSaldo();
+        $('#pagoModal').modal('hide');
+        document.getElementById('montoServicio').value = '';
+        document.getElementById('servicio').value = '';
+        alert(`¡Pago exitoso! Has pagado $${monto.toFixed(2)} para el servicio de ${servicio}.`);
+      } else {
+        alert("Monto inválido, saldo insuficiente o no se seleccionó servicio.");
+      }
+    });
+
+    // Salir
+    document.getElementById('btnSalir').addEventListener('click', function() {
+      window.location.href = 'index.html';
+    });
+
+    // Redirigir a otras pantallas
+    document.getElementById('btnHistorial').addEventListener('click', function() {
+      window.location.href = 'historial.html';
+    });
+    document.getElementById('btnGrafica').addEventListener('click', function() {
+      window.location.href = 'grafica.html';
+    });
+  </script>
 </body>
 </html>
