@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/css/index.css">
   <link rel="icon" type="image/png" href="assets/img/valor.png">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
   <main class="container py-5">
@@ -19,15 +20,17 @@
               <h1 class="h4">Inicia Sesión en tu Pokémon Bank</h1>
               <p class="text-muted small mb-0">Ingresa tus credenciales para continuar</p>
             </div>
-            <form id="loginForm" autocomplete="on" novalidate>
+
+            <!-- Login Form -->
+            <form id="loginForm" autocomplete="off" novalidate>
               <div class="form-group">
                 <label for="username">Usuario</label>
                 <input id="username" name="username" type="text" class="form-control" placeholder="Tu Usuario" required>
               </div>
               <div class="form-group">
                 <label for="password">PIN</label>
-                <input id="password" name="password" type="password" class="form-control" placeholder="PIN" minlength="4" required>
-                <small class="form-text text-muted">Mínimo 4 caracteres.</small>
+                <input id="password" name="password" type="password" class="form-control" placeholder="PIN" maxlength="4" required>
+                <small class="form-text text-muted">4 dígitos numéricos.</small>
               </div>
               <div class="form-group form-check">
                 <input id="remember" name="remember" type="checkbox" class="form-check-input">
@@ -41,31 +44,29 @@
             </form>
           </div>
         </div>
+
         <p class="text-center text-muted small mt-3 mb-0">
           Al iniciar sesión, aceptas nuestros 
-          <a href="#" id="linkTerminos">términos</a>.
+          <a href="#" id="linkTerminos">términos y condiciones</a>.
         </p>
       </div>
     </div>
   </main>
 
-  <!-- Modales -->
-  <div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+  <!-- Modal Olvidé PIN -->
+  <div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="forgotLabel">Recuperar acceso</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <h5 class="modal-title">Recuperar acceso</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <form id="forgotForm" novalidate>
+        <form id="forgotForm" autocomplete="off" novalidate>
           <div class="modal-body">
             <p class="text-muted mb-3">Escribe el correo asociado a tu cuenta para enviarte un enlace y restablecer tu PIN.</p>
             <div class="form-group">
               <label for="recoverEmail">Correo electrónico</label>
               <input type="email" class="form-control" id="recoverEmail" name="recoverEmail" placeholder="tu@email.com" required>
-              <div class="invalid-feedback">Ingresa un correo válido.</div>
             </div>
           </div>
           <div class="modal-footer">
@@ -77,17 +78,16 @@
     </div>
   </div>
 
-  <div class="modal fade" id="crearCuentaModal" tabindex="-1" role="dialog" aria-labelledby="crearCuentaLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+  <!-- Modal Crear cuenta -->
+  <div class="modal fade" id="crearCuentaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="crearCuentaLabel">Crear cuenta nueva</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <h5 class="modal-title">Crear cuenta nueva</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-          <form id="formCrearCuenta" novalidate>
+          <form id="formCrearCuenta" autocomplete="off" novalidate>
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="nombre">Nombre</label>
@@ -104,7 +104,7 @@
             </div>
             <div class="form-group">
               <label for="pin">PIN nuevo (4 dígitos)</label>
-              <input type="password" class="form-control" id="pin" name="pin" maxlength="4" pattern="\d{4}" placeholder="••••" required>
+              <input type="password" class="form-control" id="pin" name="pin" maxlength="4" placeholder="••••" required>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
           </form>
@@ -113,50 +113,97 @@
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
-    // Redirige a acciones.html con usuario
-    document.getElementById('loginForm').addEventListener('submit', function(e){
+    function validarEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    function validarPIN(pin) {
+      return /^\d{4}$/.test(pin);
+    }
+
+    function mostrarAlerta({icon, title, text, html}) {
+      Swal.fire({
+        icon: icon,
+        title: title,
+        text: text || undefined,
+        html: html || undefined,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#007bff',
+        buttonsStyling: true
+      });
+    }
+
+    // Login
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function(e){
       e.preventDefault();
-      const usuario = document.getElementById('username').value;
+      const usuario = document.getElementById('username').value.trim();
+      const pin = document.getElementById('password').value.trim();
+
+      if(!usuario || !pin){
+        mostrarAlerta({icon:'error',title:'Error',text:'Debes ingresar tu usuario y tu PIN.'});
+        return;
+      }
+      if(!validarPIN(pin)){
+        mostrarAlerta({icon:'error',title:'Error',text:'El PIN debe tener exactamente 4 dígitos numéricos.'});
+        return;
+      }
+
+      loginForm.reset(); // limpiar campos
       window.location.href = `acciones.html?usuario=${encodeURIComponent(usuario)}`;
     });
 
-    // Mensaje al dar click en términos
-    document.getElementById('linkTerminos').addEventListener('click', function(e) {
+    // Términos
+    document.getElementById('linkTerminos').addEventListener('click', function(e){
       e.preventDefault();
-      alert("Al aceptar los términos, aceptas las condiciones de uso de Pokémon Bank.");
+      mostrarAlerta({
+        icon: 'info',
+        title: 'Términos y condiciones',
+        text: 'Al aceptar los términos, aceptas las condiciones de uso de Pokémon Bank.'
+      });
     });
 
-    // Modal Olvidé PIN
-    document.getElementById('forgotForm').addEventListener('submit', function(e){
+    // Recuperar PIN
+    const forgotForm = document.getElementById('forgotForm');
+    forgotForm.addEventListener('submit', function(e){
       e.preventDefault();
-      const email = document.getElementById('recoverEmail').value;
-      if(email) {
-        alert(`Se ha enviado un enlace de recuperación a ${email}`);
-        $('#forgotModal').modal('hide');
-      } else {
-        alert("Por favor ingresa un correo válido.");
+      const email = document.getElementById('recoverEmail').value.trim();
+      if(!validarEmail(email)){
+        mostrarAlerta({icon:'error',title:'Error',text:'Por favor ingresa un correo válido.'});
+        return;
       }
+      $('#forgotModal').modal('hide');
+      mostrarAlerta({icon:'success',title:'Enviado',text:`Se ha enviado un enlace de recuperación a ${email}`});
+      forgotForm.reset();
     });
 
-    // Modal Crear cuenta
-    document.getElementById('formCrearCuenta').addEventListener('submit', function(e){
+    // Crear cuenta
+    const crearForm = document.getElementById('formCrearCuenta');
+    crearForm.addEventListener('submit', function(e){
       e.preventDefault();
-      const nombre = document.getElementById('nombre').value;
-      const apellido = document.getElementById('apellido').value;
-      const correo = document.getElementById('correo').value;
-      const pin = document.getElementById('pin').value;
+      const nombre = document.getElementById('nombre').value.trim();
+      const apellido = document.getElementById('apellido').value.trim();
+      const correo = document.getElementById('correo').value.trim();
+      const pin = document.getElementById('pin').value.trim();
 
-      if(nombre && apellido && correo && pin.length === 4) {
-        alert(`Cuenta creada para ${nombre} ${apellido}. ¡Bienvenido a Pokémon Bank!`);
-        $('#crearCuentaModal').modal('hide');
-      } else {
-        alert("Por favor completa todos los campos correctamente.");
+      if(!nombre || !apellido || !validarEmail(correo) || !validarPIN(pin)){
+        mostrarAlerta({icon:'error',title:'Error',text:'Por favor ingresa un correo válido y/o un PIN de 4 dígitos numéricos.'});
+        return;
       }
+
+      $('#crearCuentaModal').modal('hide');
+      mostrarAlerta({
+        icon: 'success',
+        title: 'Cuenta creada',
+        html: `Usuario: <strong>${nombre} ${apellido}</strong><br>¡Bienvenido a Pokémon Bank!`
+      });
+
+      crearForm.reset();
     });
   </script>
 </body>
