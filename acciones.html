@@ -247,14 +247,10 @@ document.getElementById('formPago').addEventListener('submit',e=>{
 // Salir
 document.getElementById('btnSalir').addEventListener('click',()=>{ window.location.href='index.html'; });
 
-// Historial PDF
-document.getElementById('btnHistorial').addEventListener('click',()=>{
-  const {jsPDF} = window.jspdf;
-  const doc = new jsPDF();
-  doc.text(`Historial de ${usuario}`,10,10);
-  doc.text(`Saldo real: $${saldoReal.toFixed(2)}`,10,20);
-  doc.save('historial.pdf');
-  mostrarAlerta({icon:'info',title:'Historial generado',text:'Se ha descargado el historial en PDF.'});
+// Historial → redirige a historial.html con usuario
+document.getElementById('btnHistorial').addEventListener('click', () => {
+  const usuarioParam = encodeURIComponent(usuario);
+  window.location.href = `historial.html?usuario=${usuarioParam}`;
 });
 
 // Gráfica
