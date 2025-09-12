@@ -16,3 +16,32 @@ body::before {
     filter: blur(8px) brightness(0.7);
     z-index: -1;
 }
+
+.card {
+    border-radius: 1.25rem;
+}
+
+.modal-content {
+    border-radius: 1.25rem;
+}
+
+.btn-primary {
+    background-color: #4EA5DF;
+    border-color: #4EA5DF;
+    color: #fff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #357cae;
+    border-color: #357cae;
+    color: #fff;
+}
+
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:active:focus {
+    background-color: #27618a;
+    border-color: #27618a;
+    color: #fff;
+}
