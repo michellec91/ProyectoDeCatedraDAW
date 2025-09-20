@@ -115,20 +115,69 @@ document.getElementById('btnHistorial').addEventListener('click', () => {
   window.location.href = `historial.html?usuario=${usuarioParam}`;
 });
 
-document.getElementById('btnGrafica').addEventListener('click', () => {
-  $('#graficaModal').modal('show');
-  const ctx = document.getElementById('chartTransacciones').getContext('2d');
-  if (window.chartInstance) window.chartInstance.destroy();
-  window.chartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Depósitos', 'Retiros', 'Pagos'],
-      datasets: [{
-        label: 'Cantidad de transacciones',
-        data: [5, 3, 2],
-        backgroundColor: ['#28a745', '#dc3545', '#007bff']
-      }]
-    },
-    options: {responsive: true}
-  });
+const historialTransacciones = [
+    { fecha: '20-Julio-2025', descripcion: 'Pago intereses', monto: 22.00, tipo: 'Credito' },
+    { fecha: '22-Julio-2025', descripcion: 'Pago tarjeta de credito', monto: 18.00, tipo: 'Debito' },
+    { fecha: '24-Julio-2025', descripcion: 'Retiro ATM', monto: 10.00, tipo: 'Debito' },
+    { fecha: '26-Julio-2025', descripcion: 'Transferencia 365', monto: 25.00, tipo: 'Credito' },
+    { fecha: '28-Julio-2025', descripcion: 'Pago Del Sur', monto: 50.00, tipo: 'Debito' },
+    { fecha: '30-Julio-2025', descripcion: 'Pago planilla', monto: 800.00, tipo: 'Credito' },
+    { fecha: '02-Agosto-2025', descripcion: 'Pago de intereses', monto: 23.00, tipo: 'Credito' },
+    { fecha: '04-Agosto-2025', descripcion: 'Pago de tarjeta de credito', monto: 200.00, tipo: 'Debito' },
+    { fecha: '06-Agosto-2025', descripcion: 'Transferencia 365', monto: 35.00, tipo: 'Credito' },
+    { fecha: '08-Agosto-2025', descripcion: 'Pago ANDA', monto: 10.00, tipo: 'Debito' }
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('chartTransacciones').getContext('2d');
+    let chartInstance = null;
+
+    function renderLineChart(labels, data) {
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Evolución del Saldo ($)',
+                    data: data, 
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Evolución del Saldo a lo Largo del Tiempo'
+                    }
+                }
+            }
+        });
+    }
+
+    document.getElementById('btnGrafica').addEventListener('click', () => {
+        let saldoAcumulado = 1000; 
+        const saldoEvolucion = [];
+        const fechas = [];
+
+        historialTransacciones.forEach(t => {
+            if (t.tipo === 'Credito') {
+                saldoAcumulado += t.monto;
+            } else {
+                saldoAcumulado -= t.monto;
+            }
+            saldoEvolucion.push(saldoAcumulado.toFixed(2));
+            fechas.push(t.fecha);
+        });
+
+        renderLineChart(fechas, saldoEvolucion);
+        $('#graficaModal').modal('show');
+    });
 });
