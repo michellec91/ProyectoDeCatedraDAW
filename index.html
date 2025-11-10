@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pokémon Bank</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/index.css">
-  <link rel="icon" type="image/png" href="assets/img/valor.png">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/css/index.css" />
+  <link rel="icon" type="image/png" href="assets/img/valor.png" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
   <main class="container py-5">
     <div class="row justify-content-center">
@@ -16,7 +17,7 @@
         <div class="card shadow-sm">
           <div class="card-body">
             <div class="text-center mb-4">
-              <img src="assets/img/valor.png" alt="Pokémon Bank" width="72" height="72" class="mb-2">
+              <img src="assets/img/valor.png" alt="Pokémon Bank" width="72" height="72" class="mb-2" />
               <h1 class="h4">Inicia Sesión en tu Pokémon Bank</h1>
               <p class="text-muted small mb-0">Ingresa tus credenciales para continuar</p>
             </div>
@@ -25,15 +26,15 @@
             <form id="loginForm" autocomplete="off" novalidate>
               <div class="form-group">
                 <label for="username">Usuario</label>
-                <input id="username" name="username" type="text" class="form-control" placeholder="Tu Usuario" required>
+                <input id="username" name="username" type="text" class="form-control" placeholder="Tu Usuario" required />
               </div>
               <div class="form-group">
                 <label for="password">PIN</label>
-                <input id="password" name="password" type="password" class="form-control" placeholder="PIN" maxlength="4" required>
+                <input id="password" name="password" type="password" class="form-control" placeholder="PIN" maxlength="4" required />
                 <small class="form-text text-muted">4 dígitos numéricos.</small>
               </div>
               <div class="form-group form-check">
-                <input id="remember" name="remember" type="checkbox" class="form-check-input">
+                <input id="remember" name="remember" type="checkbox" class="form-check-input" />
                 <label class="form-check-label" for="remember">Recordar Usuario</label>
               </div>
               <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
@@ -46,7 +47,7 @@
         </div>
 
         <p class="text-center text-muted small mt-3 mb-0">
-          Al iniciar sesión, aceptas nuestros 
+          Al iniciar sesión, aceptas nuestros
           <a href="#" id="linkTerminos">términos y condiciones</a>.
         </p>
       </div>
@@ -63,10 +64,12 @@
         </div>
         <form id="forgotForm" autocomplete="off" novalidate>
           <div class="modal-body">
-            <p class="text-muted mb-3">Escribe el correo asociado a tu cuenta para enviarte un enlace y restablecer tu PIN.</p>
+            <p class="text-muted mb-3">
+              Escribe el correo asociado a tu cuenta para enviarte un enlace y restablecer tu PIN.
+            </p>
             <div class="form-group">
               <label for="recoverEmail">Correo electrónico</label>
-              <input type="email" class="form-control" id="recoverEmail" name="recoverEmail" placeholder="tu@email.com" required>
+              <input type="email" class="form-control" id="recoverEmail" name="recoverEmail" placeholder="tu@email.com" required />
             </div>
           </div>
           <div class="modal-footer">
@@ -85,26 +88,28 @@
         <div class="modal-header">
           <h5 class="modal-title">Crear cuenta nueva</h5>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+          
         </div>
         <div class="modal-body">
           <form id="formCrearCuenta" autocomplete="off" novalidate>
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="nombre">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                <input type="text" class="form-control" id="nombre" name="nombre" required />
               </div>
               <div class="form-group col-md-6">
                 <label for="apellido">Apellido</label>
-                <input type="text" class="form-control" id="apellido" name="apellido" required>
+                <input type="text" class="form-control" id="apellido" name="apellido" required />
               </div>
             </div>
             <div class="form-group">
               <label for="correo">Correo</label>
-              <input type="email" class="form-control" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
+              <input type="email" class="form-control" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required />
             </div>
             <div class="form-group">
               <label for="pin">PIN nuevo (4 dígitos)</label>
-              <input type="password" class="form-control" id="pin" name="pin" maxlength="4" placeholder="••••" required>
+              <input type="password" class="form-control" id="pin" name="pin" maxlength="4" placeholder="••••" required />
             </div>
             <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
           </form>
@@ -113,12 +118,10 @@
     </div>
   </div>
 
-  
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  
   <script src="assets/js/index.js"></script>
 </body>
 </html>

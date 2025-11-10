@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pokémon Bank — Análisis</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Chart.js + SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Estética acorde al proyecto (texto blanco sobre fondo) -->
+  <style>
+    body {
+      min-height: 100vh;
+      background: url('./assets/img/login.jpg') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background: inherit; filter: blur(6px) brightness(0.75);
+      z-index:-1;
+    }
+    .card { border: 0; border-radius: 1rem; }
+    .brand, .username { color:#fff; text-shadow: 0 2px 6px rgba(0,0,0,.35); }
+    footer { color:#fff; text-align:center; padding:16px; font-weight:900; }
+    .header-logo { height: 38px; }
+    .btn-export { white-space: nowrap; }
+    .kpi { font-weight: 700; font-size: 1.05rem; }
+    .kpi small { font-weight: 500; color:#6c757d; }
+  </style>
+</head>
+<body>
+  <!-- NAV / Encabezado -->
+  <nav class="container py-3 d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center gap-2">
+      <img src="./assets/img/valor.png" alt="Pokémon Bank" class="header-logo">
+      <span class="brand fw-semibold">Pokémon Bank — Análisis</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <span class="username" id="username">Invitado</span>
+      <a href="./acciones.html" class="btn btn-light btn-sm">Volver</a>
+      <a href="./historial.html" class="btn btn-outline-light btn-sm">Ir a Historial</a>
+    </div>
+  </nav>
+
+  <main class="container pb-4">
+    <!-- KPIs -->
+    <div class="row g-3">
+      <div class="col-12 col-md-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <div class="kpi">Total transacciones: <span id="kpiTotal">0</span></div>
+            <small>Registros en el sistema</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <div class="kpi">Ingresos: <span id="kpiIngresos">$0.00</span></div>
+            <small>Suma de depósitos</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <div class="kpi">Egresos: <span id="kpiEgresos">$0.00</span></div>
+            <small>Retiros + pagos</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <div class="kpi">Saldo actual: <span id="kpiSaldo">$0.00</span></div>
+            <small>Según localStorage</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controles -->
+    <div class="d-flex justify-content-end my-3 gap-2">
+      <button id="btnPDFEstado" class="btn btn-primary d-none">Descargar Estado de Cuenta (PDF)</button>
+      <button id="btnRefresh" class="btn btn-outline-light">Refrescar datos</button>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row g-4">
+      <!-- 1) Conteo por tipo -->
+      <div class="col-12 col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="m-0">Transacciones por tipo</h5>
+              <button class="btn btn-outline-secondary btn-sm btn-export" data-target="chartTipos">Descargar PNG</button>
+            </div>
+            <canvas id="chartTipos" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2) Ingresos vs Egresos por mes -->
+      <div class="col-12 col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="m-0">Ingresos vs Egresos por mes</h5>
+              <button class="btn btn-outline-secondary btn-sm btn-export" data-target="chartMeses">Descargar PNG</button>
+            </div>
+            <canvas id="chartMeses" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3) Distribución de pagos por servicio -->
+      <div class="col-12 col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="m-0">Pagos por servicio</h5>
+              <button class="btn btn-outline-secondary btn-sm btn-export" data-target="chartServicios">Descargar PNG</button>
+            </div>
+            <canvas id="chartServicios" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4) Evolución del saldo (acumulado neto) -->
+      <div class="col-12 col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="m-0">Evolución del saldo</h5>
+              <button class="btn btn-outline-secondary btn-sm btn-export" data-target="chartSaldo">Descargar PNG</button>
+            </div>
+            <canvas id="chartSaldo" height="120"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje vacío -->
+    <div id="empty" class="text-center text-muted py-4 d-none">
+      No hay transacciones suficientes para mostrar análisis. Realiza operaciones para ver los gráficos.
+    </div>
+  </main>
+
+  <footer>
+    Todos los derechos reservados - 2025©
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Lógica de análisis (solo lee localStorage) -->
+  <script>
+    const money = n => `$${Number(n||0).toFixed(2)}`;
+
+    // 1) Poblar usuario
+    (function setUsername(){
+      const keys = ["pokemonBank","pokebank","bankState","appState"];
+      let name = null;
+      for (const k of keys) {
+        try { const s = JSON.parse(localStorage.getItem(k) || "null");
+          if (s) { name = s?.user?.name || s?.usuario?.nombre || name; if (name) break; }
+        } catch {}
+      }
+      if (!name) {
+        const p = new URLSearchParams(location.search);
+        name = p.get("usuario") || "Invitado";
+      }
+      document.getElementById("username").textContent = name;
+    })();
+
+    // 2) Cargar estado y normalizar
+    function loadState() {
+      const keys = ["pokemonBank","pokebank","bankState","appState"];
+      let s = null;
+      for (const k of keys) {
+        try { const raw = localStorage.getItem(k); if (raw) { s = JSON.parse(raw); break; } } catch {}
+      }
+      if (!s) s = { balance: 0, transactions: [] };
+      let txs = Array.isArray(s.transactions) ? s.transactions : [];
+      // Normalización mínima
+      txs = txs.map((t, i) => ({
+        id: t.id || `tx_${i+1}`,
+        type: t.type || t.tipo || "inquiry",
+        service: t.service ?? t.servicio ?? null,
+        amount: Number(t.amount ?? t.monto ?? 0),
+        dateISO: t.dateISO || t.fechaISO || (t.fecha ? new Date(t.fecha).toISOString() : new Date().toISOString()),
+        balanceAfter: Number(t.balanceAfter ?? t.saldoPosterior ?? t.saldo ?? s.balance ?? 0)
+      }));
+      return { balance: Number(s.balance ?? 0), transactions: txs };
+    }
+
+    // 3) Helpers de análisis
+    const normalizeType = (t="") => {
+      t = String(t).toLowerCase().trim();
+      if (["deposit","depósito","deposito"].includes(t)) return "deposit";
+      if (["withdraw","retiro"].includes(t)) return "withdraw";
+      if (["payment","pago","servicio"].includes(t)) return "payment";
+      if (["inquiry","consulta","saldo"].includes(t)) return "inquiry";
+      return "inquiry";
+    };
+
+    function groupByMonth(txs) {
+      const by = {};
+      txs.forEach(t => {
+        const d = new Date(t.dateISO);
+        const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+        if (!by[key]) by[key] = { ingresos:0, egresos:0 };
+        const amt = Number(t.amount||0);
+        const typ = normalizeType(t.type);
+        if (typ === "deposit") by[key].ingresos += amt;
+        if (typ === "withdraw" || typ === "payment") by[key].egresos += amt;
+      });
+      const months = Object.keys(by).sort();
+      return {
+        labels: months,
+        ingresos: months.map(m => by[m].ingresos),
+        egresos: months.map(m => by[m].egresos)
+      };
+    }
+
+    function paymentsByService(txs) {
+      const map = {};
+      txs.forEach(t => {
+        if (normalizeType(t.type) === "payment") {
+          const s = (t.service || "Otro").toString();
+          map[s] = (map[s]||0) + 1;
+        }
+      });
+      const labels = Object.keys(map).sort();
+      const data = labels.map(k => map[k]);
+      return { labels, data };
+    }
+
+    function computeKPIs(state) {
+      const txs = state.transactions;
+      const total = txs.length;
+      let ing = 0, egr = 0;
+      txs.forEach(t => {
+        const amt = Number(t.amount||0);
+        const typ = normalizeType(t.type);
+        if (typ==="deposit") ing += amt;
+        if (typ==="withdraw" || typ==="payment") egr += amt;
+      });
+      return { total, ing, egr, saldo: state.balance };
+    }
+
+    function computeBalanceSeries(state) {
+      // orden por fecha asc y acumulado basado en deltas
+      const ordered = state.transactions.slice().sort((a,b)=> new Date(a.dateISO)-new Date(b.dateISO));
+      let running = 0;
+      const labels = [];
+      const values = [];
+      ordered.forEach((t) => {
+        const typ = normalizeType(t.type);
+        const amt = Number(t.amount||0);
+        if (typ==="deposit") running += amt;
+        if (typ==="withdraw" || typ==="payment") running -= amt;
+        labels.push(new Date(t.dateISO).toLocaleString());
+        values.push(running);
+      });
+      return { labels, values };
+    }
+
+    // 4) Instancia de charts
+    const charts = {};
+    function destroyIfExists(id) {
+      const c = charts[id];
+      if (c) { c.destroy(); charts[id] = null; }
+    }
+
+    // 5) Render del dashboard
+    function renderDashboard() {
+      const state = loadState();
+      const txs = state.transactions;
+
+      // KPIs
+      const k = computeKPIs(state);
+      document.getElementById("kpiTotal").textContent = k.total;
+      document.getElementById("kpiIngresos").textContent = money(k.ing);
+      document.getElementById("kpiEgresos").textContent = money(k.egr);
+      document.getElementById("kpiSaldo").textContent = money(k.saldo);
+
+      // Mensaje vacío
+      document.getElementById("empty").classList.toggle("d-none", txs.length > 0);
+
+      // 1) Conteo por tipo
+      const counts = { deposit:0, withdraw:0, payment:0, inquiry:0 };
+      txs.forEach(t => { const k = normalizeType(t.type); if (counts[k]!=null) counts[k]++; });
+
+      destroyIfExists("chartTipos");
+      charts.chartTipos = new Chart(document.getElementById("chartTipos"), {
+        type:"bar",
+        data:{
+          labels:["Depósitos","Retiros","Pagos","Consultas"],
+          datasets:[{ label:"Cantidad", data:[counts.deposit,counts.withdraw,counts.payment,counts.inquiry], borderWidth:1 }]
+        },
+        options:{ responsive:true, scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } } }
+      });
+
+      // 2) Ingresos vs Egresos por mes
+      const m = groupByMonth(txs);
+      destroyIfExists("chartMeses");
+      charts.chartMeses = new Chart(document.getElementById("chartMeses"), {
+        type:"line",
+        data:{
+          labels: m.labels,
+          datasets:[
+            { label:"Ingresos", data:m.ingresos, tension:.2 },
+            { label:"Egresos", data:m.egresos, tension:.2 }
+          ]
+        },
+        options:{ responsive:true, scales:{ y:{ beginAtZero:true } } }
+      });
+
+      // 3) Distribución de pagos por servicio
+      const p = paymentsByService(txs);
+      destroyIfExists("chartServicios");
+      charts.chartServicios = new Chart(document.getElementById("chartServicios"), {
+        type:"doughnut",
+        data:{ labels:p.labels, datasets:[{ data:p.data }] },
+        options:{ responsive:true, plugins:{ legend:{ position:"bottom" } } }
+      });
+
+      // 4) Evolución del saldo (acumulado neto desde 0)
+      const b = computeBalanceSeries(state);
+      destroyIfExists("chartSaldo");
+      charts.chartSaldo = new Chart(document.getElementById("chartSaldo"), {
+        type:"line",
+        data:{ labels:b.labels, datasets:[{ label:"Saldo (acumulado neto)", data:b.values, tension:.2 }] },
+        options:{ responsive:true, scales:{ y:{ beginAtZero:true } } }
+      });
+    }
+
+    // 6) Exportar cada gráfico como PNG
+    function exportChartPNG(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = `${canvasId}.png`;
+      a.click();
+    }
+
+    // 7) Eventos
+    document.addEventListener("DOMContentLoaded", () => {
+      // Mostrar botón de PDF si existe reportes.js
+      if (typeof window.generarPDFHistorial === "function") {
+        document.getElementById("btnPDFEstado").classList.remove("d-none");
+        document.getElementById("btnPDFEstado").addEventListener("click", () => {
+          window.generarPDFHistorial();
+        });
+      }
+
+      renderDashboard();
+
+      // Botón refrescar
+      document.getElementById("btnRefresh")?.addEventListener("click", () => {
+        renderDashboard();
+        if (window.Swal) Swal.fire({ icon:"success", title:"Datos actualizados", timer:900, showConfirmButton:false });
+      });
+
+      // Botones de export
+      document.querySelectorAll(".btn-export").forEach(btn => {
+        btn.addEventListener("click", () => exportChartPNG(btn.dataset.target));
+      });
+    });
+  </script>
+
+  <!-- (Opcional) si se quiere que el archivo también pueda generar el PDF de estado de cuenta, incluye reportes.js -->
+  <script src="./assets/js/reportes.js"></script>
+</body>
+</html>

@@ -1,115 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial de transacciones</title>
-    <link rel="stylesheet" href="assets/css/historial.css">
-    <link rel="icon" type="image/png" href="assets/img/valor.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pokémon Bank — Historial</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Tu CSS -->
+  <link rel="stylesheet" href="./assets/css/historial.css" />
+
+  <!-- Librerías Persona 4 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <!-- Ajustes mínimos -->
+  <style>
+    /* Título blanco y legible sobre el fondo */
+    section h2 { color: #fff !important; text-shadow: 0 2px 6px rgba(0,0,0,.35); }
+    /* Usuario en blanco (sin tocar tu clase en el .css) */
+    .nombreusuario { color: #fff !important; }
+    /* Footer en blanco */
+    footer { color: #fff !important; }
+    /* Tabla y UX */
+    .table thead th { position: sticky; top: 0; background: rgba(248,249,250,.95); z-index: 1; }
+    .table tbody tr:hover { background: rgba(0,0,0,.03); }
+    th.sortable { cursor: pointer; user-select: none; }
+    th.sortable::after { content: " ↕"; font-size: .85em; color: #777; }
+    .card { border: 0; border-radius: 1rem; }
+  </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="index.html" target="_self"><img src="assets/img/valor.png" alt="Pokemon"></a>
-            <ul class="horizontal">
-                <li><a href="index.html" class="iconologin" target="_blank"><img src="assets/img/Login1.png" alt="Login"></a></li>
-                <li><a href="index.html" class="nombreusuario" target="_blank">"Your name"</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
+  <!-- NAV con tu estilo y usuario a la izquierda -->
+  <nav class="container">
+    <div class="horizontal">
+      <div class="iconologin">
+        <!-- Logo pequeño del header (ajusta el src si quieres otro) -->
+        <img src="./assets/img/Login1.png" alt="Pokémon Bank">
+      </div>
+      <a href="#" class="nombreusuario" id="username">Invitado</a>
+    </div>
+
+    <div class="horizontal">
+      <a href="./acciones.html" class="btn btn-light btn-sm me-2">Volver</a>
+     
+      <!-- Estado de cuenta (todo el historial) -->
+      <button id="btnPDF" class="btn btn-primary btn-sm">Estado de Cuenta</button>
+    </div>
+  </nav>
+
+  <!-- Logo grande centrado arriba del historial -->
+  <header class="text-center mt-3">
+    <!-- Usa tu logo grande; aquí va valor.png -->
+    <img src="./assets/img/valor.png" width="95" height="95" alt="Pokémon Bank">
+  </header>
+
+  <main class="container my-3">
     <section>
-        <h2>Historial de transacciones</h2>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Fecha</th>
-                        <th>Descripción</th>
-                        <th>Monto</th>
-                        <th>Tipo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>20-Julio-2025</td>
-                        <td>Pago intereses</td>
-                        <td>$22.00</td>
-                        <td>Credito</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>22-Julio-2025</td>
-                        <td>Pago tarjeta de credito</td>
-                        <td>$18.00</td>
-                        <td>Debito</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>24-Julio-2025</td>
-                        <td>Retiro ATM</td>
-                        <td>$10.00</td>
-                        <td>Debito</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>26-Julio-2025</td>
-                        <td>Transferencia 365</td>
-                        <td>$25.00</td>
-                        <td>Credito</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>28-Julio-2025</td>
-                        <td>Pago Del Sur</td>
-                        <td>$50.00</td>
-                        <td>Debito</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>30-Julio-2025</td>
-                        <td>Pago planilla</td>
-                        <td>$800.00</td>
-                        <td>Credito</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>02-Agosto-2025</td>
-                        <td>Pago de intereses</td>
-                        <td>$23.00</td>
-                        <td>Credito</td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td>04-Agosto-2025</td>
-                        <td>Pago de tarjeta de credito</td>
-                        <td>$200.00</td>
-                        <td>Debito</td>
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td>06-Agosto-2025</td>
-                        <td>Transferencia 365</td>
-                        <td>$35.00</td>
-                        <td>Credito</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>08-Agosto-2025</td>
-                        <td>Pago ANDA</td>
-                        <td>$10.00</td>
-                        <td>Debito</td>
-                    </tr>
-                </tbody>
+      <h2>Historial de Transacciones</h2>
+
+      <div class="card shadow-sm mt-3">
+        <div class="card-body">
+          <div class="row g-2 align-items-center mb-3">
+            <div class="col-md-6">
+              <input id="buscador" class="form-control" placeholder="Buscar por tipo, servicio o fecha…">
+            </div>
+            <div class="col-md-6 text-md-end">
+              <small class="text-muted" id="resumen"></small>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle" id="tablaHistorial">
+              <thead class="table-light">
+                <tr>
+                  <th style="width:60px">#</th>
+                  <th data-sort="fecha" class="sortable">Fecha</th>
+                  <th data-sort="tipo" class="sortable">Tipo</th>
+                  <th data-sort="servicio" class="sortable">Servicio</th>
+                  <th data-sort="monto" class="sortable text-end">Monto</th>
+                  <th data-sort="saldo" class="sortable text-end">Saldo</th>
+                  <th style="width:120px" class="text-end">Comprobante</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
             </table>
+          </div>
+
+          <div id="empty" class="text-center text-muted py-4 d-none">
+            Aún no hay transacciones registradas.
+          </div>
         </div>
+      </div>
     </section>
-</main>
-    <footer>
-        <p>Todos los derechos reservados - 2025&copy</p>
-    </footer> 
+  </main>
+
+  <footer>
+    Todos los derechos reservados - 2025 ©
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Poblar el nombre de usuario desde localStorage o ?usuario= -->
+  <script>
+    (function setUsername(){
+      const LS_KEYS = ["pokemonBank","pokebank","bankState","appState"];
+      let name = null;
+      for (const k of LS_KEYS) {
+        try {
+          const raw = localStorage.getItem(k);
+          if (raw) {
+            const s = JSON.parse(raw);
+            name = s?.user?.name || s?.usuario?.nombre || null;
+            if (name) break;
+          }
+        } catch {}
+      }
+      if (!name) {
+        const params = new URLSearchParams(location.search);
+        name = params.get("usuario") || "Invitado";
+      }
+      const el = document.getElementById("username");
+      if (el) el.textContent = name;
+    })();
+
+    /* Marca opcional para PDFs bonitos en reportes.js */
+    window.POKEMON_BANK_BRAND = {
+      bankName: "Pokémon Bank",
+      logoPath: "./assets/img/valor.png"  // será usado en los PDFs
+    };
+  </script>
+
+  <!-- Persona 4 -->
+  <script src="./assets/js/historial.js"></script>
+  <script src="./assets/js/reportes.js"></script>
 </body>
 </html>

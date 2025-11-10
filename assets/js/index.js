@@ -18,25 +18,76 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Login
+  // ==================================================================
+  // --- Login (Modificado para validar a Ash y crear estado) ---
+  // ==================================================================
   const loginForm = document.getElementById('loginForm');
   loginForm.addEventListener('submit', function(e){
     e.preventDefault();
     const usuario = document.getElementById('username').value.trim();
     const pin = document.getElementById('password').value.trim();
 
+    // 1. Validaciones básicas
     if(!usuario || !pin){
-      mostrarAlerta({icon:'error',title:'Error',text:'Debes ingresar tu usuario y tu PIN.'});
-      return;
-    }
-    if(!validarPIN(pin)){
-      mostrarAlerta({icon:'error',title:'Error',text:'El PIN debe tener exactamente 4 dígitos numéricos.'});
+      mostrarAlerta({
+        icon:'error',
+        title:'Error',
+        text:'Debes ingresar tu usuario y tu PIN.'
+      });
       return;
     }
 
+    if(!validarPIN(pin)){
+      mostrarAlerta({
+        icon:'error',
+        title:'Error',
+        text:'El PIN debe tener exactamente 4 dígitos numéricos.'
+      });
+      return;
+    }
+
+    // 2. Validación específica de usuario
+    const validUser = "Ash Ketchum";
+    const validPIN = "1234";
+    const userAccount = "1234-5678-9012";
+    const initialBalance = 500.00;
+    // Esta es la clave que historial.js y analisis.html esperan leer
+    const storageKey = "pokemonBank"; 
+
+    if (usuario !== validUser || pin !== validPIN) {
+      mostrarAlerta({
+        icon: 'error',
+        title: 'Credenciales incorrectas',
+        text: 'Usuario o PIN no válido. (Solo "Ash Ketchum" / "1234" pueden ingresar).'
+      });
+      return;
+    }
+
+    // 3. Si el login es correcto, inicializa el localStorage (si no existe)
+    // Esto asegura que los $500 y la info del usuario se carguen
+    if (!localStorage.getItem(storageKey)) {
+      const initialState = {
+        user: {
+          name: validUser,
+          account: userAccount
+        },
+        balance: initialBalance,
+        transactions: [] // Inicia sin transacciones
+      };
+      localStorage.setItem(storageKey, JSON.stringify(initialState));
+      
+      // Limpia la clave antigua que usa acciones.js para evitar conflictos
+      localStorage.removeItem('HistorialDelUsuario'); 
+    }
+
+    // 4. Redirección
     loginForm.reset();
     window.location.href = `acciones.html?usuario=${encodeURIComponent(usuario)}`;
   });
+  // ==================================================================
+  // --- Fin de la modificación de Login ---
+  // ==================================================================
+
 
   // Términos
   document.getElementById('linkTerminos').addEventListener('click', function(e){
